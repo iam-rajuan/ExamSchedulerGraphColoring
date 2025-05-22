@@ -1,0 +1,75 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <h1 class="card-title">Exam Schedule Results</h1>
+            </div>
+            <div class="card-body">
+                <p class="lead">
+                    Here is the optimized exam schedule generated using the graph coloring algorithm.
+                </p>
+                
+                <h3 class="mt-4">Schedule by Subject</h3>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Time Slot</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for subject, slot in schedule.items() %}
+                            <tr>
+                                <td>{{ subject }}</td>
+                                <td>
+                                    <span class="badge bg-primary">Time Slot {{ slot }}</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h3 class="mt-4">Schedule by Time Slot</h3>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Time Slot</th>
+                                <th>Subjects</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for slot, subjects in time_slots.items() %}
+                            <tr>
+                                <td>
+                                    <span class="badge bg-primary">Time Slot {{ slot }}</span>
+                                </td>
+                                <td>{{ subjects|join(", ") }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                
+                <h3 class="mt-4">Graph Visualization</h3>
+                <p>
+                    The graph below shows subjects as nodes, with edges connecting subjects that cannot be scheduled
+                    at the same time due to student conflicts. Nodes with the same color can be scheduled in the same time slot.
+                </p>
+                <div class="text-center">
+                    <img src="data:image/png;base64,{{ graph_image }}" alt="Graph Visualization" class="img-fluid border rounded">
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
+                    <a href="{{ url_for('index') }}" class="btn btn-primary">Create New Schedule</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
